@@ -28,7 +28,9 @@ function Office() {
     axios({
       method: 'get',
       url: TAGS_URL,
-    }).then((res) => { setTags(res.data.items.map((i) => ({ label: i.name }))); });
+    }).then((res) => {
+      setTags(res.data.items.map((t) => t.name));
+    });
   }, []);
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -86,8 +88,6 @@ function Office() {
   const currentReservations = reservations
     .sort((a, b) => a.timestamp - b.timestamp);
 
-  const options = tags;
-
   return (
     <Authenticator>
       <Header />
@@ -116,11 +116,11 @@ function Office() {
                     name={field.name}
                     value={field.value}
                     onChange={field.onChange}
-                    onBlur={field.onBlur}
                     placeholder="Tags"
-                    options={options}
-                  // eslint-disable-next-line react/jsx-props-no-spreading
+                    options={tags}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     renderInput={(params) => <TextField {...params} />}
+                    multiple
                     disablePortal
                   />
                 )}
